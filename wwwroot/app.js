@@ -97,10 +97,18 @@ const refreshButtons = () => {
 
 const showResult = (text) => {
   elements.resultText.textContent = text
+  elements.resultText.classList.remove("result-pop")
+  void elements.resultText.offsetWidth
+  elements.resultText.classList.add("result-pop")
 }
 
 const showApiError = (text) => {
   elements.apiErrorText.textContent = text
+  if (text) {
+    elements.apiErrorText.classList.remove("result-pop")
+    void elements.apiErrorText.offsetWidth
+    elements.apiErrorText.classList.add("result-pop")
+  }
 }
 
 const postJson = async (url, payload) => {

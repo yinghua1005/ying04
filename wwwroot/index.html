@@ -5,35 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>InBody 計算器</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes result-pop {
+      0% {
+        transform: scale(0.98);
+        opacity: 0.75;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .fade-in-up {
+      animation: fade-in-up 0.6s ease-out;
+    }
+
+    .result-pop {
+      animation: result-pop 0.35s ease-out;
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-900">
+<body class="min-h-screen bg-orange-50 text-orange-950 transition-colors duration-500 dark:bg-purple-950 dark:text-purple-100">
   <main class="mx-auto max-w-3xl px-4 py-8">
-    <section class="rounded-2xl bg-white p-6 shadow-lg">
+    <section class="fade-in-up rounded-2xl border border-orange-200 bg-orange-100/80 p-6 shadow-xl shadow-orange-200/60 backdrop-blur-sm dark:border-purple-800 dark:bg-purple-900/70 dark:shadow-purple-950/50">
       <h1 class="text-2xl font-bold">InBody 計算器</h1>
-      <p class="mt-2 text-sm text-slate-600">輸入資料後可計算 BMI、BMR、TDEE。</p>
+      <p class="mt-2 text-sm text-orange-700 dark:text-purple-300">輸入資料後可計算 BMI、BMR、TDEE。</p>
 
       <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
         <label class="block">
           <span class="mb-1 block text-sm font-medium">身高 (cm)</span>
-          <input id="heightCm" type="number" step="0.1" min="0" class="w-full rounded-lg border border-slate-300 px-3 py-2" />
+          <input id="heightCm" type="number" step="0.1" min="0" class="w-full rounded-lg border border-orange-300 bg-white/80 px-3 py-2 transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-300 dark:border-purple-700 dark:bg-purple-950/70 dark:focus:border-purple-400 dark:focus:ring-purple-500/40" />
           <p id="heightCmError" class="mt-1 text-xs text-red-600"></p>
         </label>
 
         <label class="block">
           <span class="mb-1 block text-sm font-medium">體重 (kg)</span>
-          <input id="weightKg" type="number" step="0.1" min="0" class="w-full rounded-lg border border-slate-300 px-3 py-2" />
+          <input id="weightKg" type="number" step="0.1" min="0" class="w-full rounded-lg border border-orange-300 bg-white/80 px-3 py-2 transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-300 dark:border-purple-700 dark:bg-purple-950/70 dark:focus:border-purple-400 dark:focus:ring-purple-500/40" />
           <p id="weightKgError" class="mt-1 text-xs text-red-600"></p>
         </label>
 
         <label class="block">
           <span class="mb-1 block text-sm font-medium">年齡</span>
-          <input id="age" type="number" step="1" min="1" max="120" class="w-full rounded-lg border border-slate-300 px-3 py-2" />
+          <input id="age" type="number" step="1" min="1" max="120" class="w-full rounded-lg border border-orange-300 bg-white/80 px-3 py-2 transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-300 dark:border-purple-700 dark:bg-purple-950/70 dark:focus:border-purple-400 dark:focus:ring-purple-500/40" />
           <p id="ageError" class="mt-1 text-xs text-red-600"></p>
         </label>
 
         <label class="block">
           <span class="mb-1 block text-sm font-medium">性別</span>
-          <select id="gender" class="w-full rounded-lg border border-slate-300 px-3 py-2">
+          <select id="gender" class="w-full rounded-lg border border-orange-300 bg-white/80 px-3 py-2 transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-300 dark:border-purple-700 dark:bg-purple-950/70 dark:focus:border-purple-400 dark:focus:ring-purple-500/40">
             <option value="">請選擇</option>
             <option value="Male">男</option>
             <option value="Female">女</option>
@@ -43,7 +74,7 @@
 
         <label class="block md:col-span-2">
           <span class="mb-1 block text-sm font-medium">活動量</span>
-          <select id="activityLevel" class="w-full rounded-lg border border-slate-300 px-3 py-2">
+          <select id="activityLevel" class="w-full rounded-lg border border-orange-300 bg-white/80 px-3 py-2 transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-300 dark:border-purple-700 dark:bg-purple-950/70 dark:focus:border-purple-400 dark:focus:ring-purple-500/40">
             <option value="">請選擇</option>
             <option value="Sedentary">久坐</option>
             <option value="Light">輕量活動</option>
@@ -56,21 +87,21 @@
       </div>
 
       <div class="mt-6 flex flex-wrap gap-3">
-        <button id="bmiButton" class="rounded-lg bg-sky-600 px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-300" disabled>
+        <button id="bmiButton" class="rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-md hover:shadow-orange-400/40 active:scale-95 disabled:cursor-not-allowed disabled:bg-orange-200 disabled:shadow-none dark:bg-purple-600 dark:hover:bg-purple-500 dark:hover:shadow-purple-900/60 dark:disabled:bg-purple-800/70" disabled>
           計算 BMI
         </button>
-        <button id="bmrButton" class="rounded-lg bg-emerald-600 px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-300" disabled>
+        <button id="bmrButton" class="rounded-lg bg-orange-600 px-4 py-2 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-orange-700 hover:shadow-md hover:shadow-orange-500/40 active:scale-95 disabled:cursor-not-allowed disabled:bg-orange-200 disabled:shadow-none dark:bg-purple-700 dark:hover:bg-purple-600 dark:hover:shadow-purple-900/60 dark:disabled:bg-purple-800/70" disabled>
           計算 BMR
         </button>
-        <button id="tdeeButton" class="rounded-lg bg-amber-600 px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-300" disabled>
+        <button id="tdeeButton" class="rounded-lg bg-orange-700 px-4 py-2 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-orange-800 hover:shadow-md hover:shadow-orange-500/45 active:scale-95 disabled:cursor-not-allowed disabled:bg-orange-200 disabled:shadow-none dark:bg-purple-800 dark:hover:bg-purple-700 dark:hover:shadow-purple-900/60 dark:disabled:bg-purple-800/70" disabled>
           計算 TDEE
         </button>
       </div>
 
-      <section class="mt-6 rounded-lg bg-slate-50 p-4">
-        <h2 class="text-sm font-semibold text-slate-700">結果</h2>
+      <section class="mt-6 rounded-lg border border-orange-200 bg-orange-50/90 p-4 dark:border-purple-700 dark:bg-purple-950/60">
+        <h2 class="text-sm font-semibold text-orange-700 dark:text-purple-300">結果</h2>
         <p id="resultText" class="mt-2 text-base">尚未計算。</p>
-        <p id="apiErrorText" class="mt-2 text-sm text-red-600"></p>
+        <p id="apiErrorText" class="mt-2 text-sm text-red-600 transition-opacity duration-200"></p>
       </section>
     </section>
   </main>
